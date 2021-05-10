@@ -125,7 +125,7 @@ Trinu_DICT = defaultdict(
 #### function for constructing weighted undirected gene network ####
 def Tri1SeqToAdj(seq):
     """
-    convert a Trinucleotide sequence of window 1 to an adjacency matrix
+    convert a Trinucleotide sequence with window 1 to an adjacency matrix
     :param seq: DNA sequence in string format
     :return adjacency matrix
     """
@@ -144,9 +144,12 @@ def Tri1SeqToAdj(seq):
     return AdjMat
 
 
+
+#--------------------------------------------------------------------------#
+
 def Tri2SeqToAdj(seq):
     """
-    convert a Trinucleotide sequence of window 2 to an adjacency matrix
+    convert a Trinucleotide sequence with window 2 to an adjacency matrix
     :param seq: DNA sequence in string format
     :return adjacency matrix
     """
@@ -169,27 +172,65 @@ def Tri2SeqToAdj(seq):
     return AdjMat
 
 
-## function to convert all dna sequences into network
+#---------------------------------------------------------------------# 
+def Tri3SeqToAdj(seq):
+    """
+    convert a Trinucleotide sequence with window 3 to an adjacency matrix
+    :param seq: DNA sequence in string format
+    :return adjacency matrix
+    """
+    
+    if len(seq)%3==1:  # if the length of the sequence mod 3=1, remove the last nucleotide
+        seq=seq[:-1]
+    if len(seq)%3==2:  # if the length of the sequence mod 3=2, remove the last 2 nucleotide
+        seq=seq[:-2]
+        
+    n=len(seq)
+    #m=len(set(seq)) # number of unique nucleotides in the sequence
+    AdjMat=np.zeros(shape=(4**3,4**3), dtype='float64')
+    
+    for k in range(n-5):
+        node1=seq[k]+seq[k+1]+seq[k+2]
+        node2=seq[k+3]+seq[k+4]+seq[k+5]
+        i=Trinu_DICT[node1]
+        j=Trinu_DICT[node2]
+        AdjMat[i,j]= AdjMat[i,j]+1
+        AdjMat[j,i]= AdjMat[i,j]
+    #AdjMat = np.transpose(AdjMat) + AdjMat
+    
+    return AdjMat
+
+
+
+
 
 @overload_method(types.Array, 'repeat')
-def Tri1_AdjMats(DNAs):
+def Tri_AdjMats(DNAs,window):
+    '''
+    convert all sequences into adjacency matrices
+    Input: DNAs: a list of all DNA sequences
+           window: length of window to construct network, window=1, 2, or 3
+    Output: list of adj matrices
+    '''
     ls_adj =[]
     append = ls_adj.append
     N = len(DNAs)
-    for i in range(N):
-        seq = DNAs[i]  
-        adj = Tri1SeqToAdj(seq)
-        append(adj)
-    return ls_adj
-
-@overload_method(types.Array, 'repeat')
-def Tri2_AdjMats(DNAs):
-    ls_adj =[]
-    append = ls_adj.append
-    N = len(DNAs)
-    for i in range(N):
-        seq = DNAs[i]  
-        adj = Tri2SeqToAdj(seq)
-        append(adj)
+    
+    if window==1:
+        for i in range(N):
+            seq = DNAs[i] 
+            adj = Tri1SeqToAdj(seq)
+            append(adj)
+    elif window==2:
+        for i in range(N):
+            seq = DNAs[i]
+            adj = Tri2SeqToAdj(seq)
+            append(adj)
+    else: 
+        for i in range(N):
+            seq = DNAs[i]
+            adj = Tri3SeqToAdj(seq)
+            append(adj)
+            
     return ls_adj
   

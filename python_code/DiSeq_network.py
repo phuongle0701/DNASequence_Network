@@ -74,9 +74,9 @@ Dinu_DICT = defaultdict(
 
 
 #### function for constructing weighted undirected gene network ####
-def SeqToAdj(seq):
+def Di1SeqToAdj(seq):
     """
-    convert a dinucleotide sequence to adjacency matrix
+    convert a dinucleotide sequence with window 1 to an adjacency matrix
     :param seq: DNA sequence in string format
     :return adjacency matrix
     """
@@ -99,19 +99,59 @@ def SeqToAdj(seq):
     
     return AdjMat
 
+  
+
+#### function for constructing weighted undirected gene network ####
+def Di2SeqToAdj(seq):
+    """
+    convert a dinucleotide sequence with window 2 to an adjacency matrix
+    :param seq: DNA sequence in string format
+    :return adjacency matrix
+    """
+    if len(seq)%2==1:  # if the length of the sequence is odd, remove the last nucleotide
+        seq=seq[:-1]
+    n=len(seq)
+    #m=len(set(seq)) # number of unique nucleotides in the sequence
+    AdjMat=np.zeros(shape=(4**2,4**2), dtype='float64')
+    
+    for k in range(n-3):
+        node1=seq[k]+seq[k+1]
+        node2=seq[k+2]+seq[k+3]
+        i=Dinu_DICT[node1]
+        j=Dinu_DICT[node2]
+        AdjMat[i,j]= AdjMat[i,j]+1
+        AdjMat[j,i]= AdjMat[i,j]
+    #AdjMat = np.transpose(AdjMat) + AdjMat
+    
+    #if m>4:  # if there exists N in the seq, remove isolated nodes from the graph adj
+    #    AdjMat=AdjMat[~np.all(AdjMat==0,axis=1)]
+    #    AdjMat=np.transpose(AdjMat)[~np.all(np.transpose(AdjMat)==0,axis=1)]
+    
+    return AdjMat
+
+
 
 ## function to convert all dna sequences into network
 @overload_method(types.Array, 'repeat')
-def Di_AdjMats(DNAs):
+def Di_AdjMats(DNAs, window):
+    '''
+    convert all sequences into adjacency matrices
+    Input: DNAs: a list of all DNA sequences
+           window: length of window to construct network, window=1 or 2
+    Output: list of adj matrices
+    '''
     ls_adj =[]
     append = ls_adj.append
     N = len(DNAs)
-    for i in range(N):
-        seq = DNAs[i]  
-        adj = SeqToAdj(seq)
-        append(adj)
+    if window==1: 
+        for i in range(N):
+            seq = DNAs[i] 
+            adj = Di1SeqToAdj(seq)
+            append(adj)
+    else:
+        for i in range(N):
+            seq = DNAs[i] 
+            adj = Di2SeqToAdj(seq)
+            append(adj)
+
     return ls_adj
-  
-
-
-
