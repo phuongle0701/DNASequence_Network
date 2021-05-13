@@ -49,6 +49,6 @@ def tidSeq_remove(seq):
     if seq.islower():
         seq=seq.upper()
         
-    seq=seq.replace('N','').replace('R','').replace('Y','').replace('K','').replace('M','').replace('W','').replace('V','').replace('S','')
+    seq=seq.replace('N','').replace('R','').replace('Y','').replace('K','').replace('M','').replace('W','').replace('V','').replace('S','').replace('B','').replace('D','').replace('H','')
      
     return seq
