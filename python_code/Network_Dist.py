@@ -37,43 +37,45 @@ def pathLength(adj):
     distmat=np.transpose(distmat)+distmat
     return(distmat)
 
-def SpectralDist2DGraph(ls_diAdj,ls_triAdj):
+def SpectralDist2DGraph(ls_Adj1,ls_Adj2):
     '''
-     Compute the spectral distances between di-sequence graphs and tri-sequence graphs
+     Compute the spectral distances between 2D graphs
      use the maximum value as the distance between each pair of graphs
      
     '''
-    N=len(ls_diAdj)
+    N=len(ls_Adj1)
     DistMat=np.zeros(shape=(N,N),dtype='float64')
     for i in range(N-1):
         for j in range(i+1, N):
-            A1=ls_diAdj[i]
-            B1=ls_triAdj[i]
-            A2=ls_diAdj[j]
-            B2=ls_triAdj[j]
+            A1=ls_Adj1[i]
+            B1=ls_Adj2[i]
+            
+            A2=ls_Adj1[j]
+            B2=ls_Ad2[j]
+            
             DistA=nc.lambda_dist(A1,A2)
             DistB=nc.lambda_dist(B1,B2)
             DistMat[i, j]=max(DistA, DistB)
     DistMat = DistMat + np.transpose(DistMat)
     return(DistMat)
     
-def SpectralDist3DGraph(ls_diAdj,ls_triAdj,ls_tetraAdj):
+def SpectralDist3DGraph(ls_Adj1,ls_Adj2,ls_Adj3):
     '''
-     Compute the spectral distances between di-sequence, tri-sequence, and tetra-sequence graphs
+     Compute the spectral distances between 3D graphs
      use the maximum value as the distance between each pair of graphs
      
     '''
-    N=len(ls_diAdj)
+    N=len(ls_Adj1)
     DistMat=np.zeros(shape=(N,N),dtype='float64')
     for i in range(N-1):
         for j in range(i+1, N):
-            A1=ls_diAdj[i]
-            B1=ls_triAdj[i]
-            C1=ls_tetraAdj[i]
+            A1=ls_Adj1[i]
+            B1=ls_Adj2[i]
+            C1=ls_Adj3[i]
             
-            A2=ls_diAdj[j]
-            B2=ls_triAdj[j]
-            C2=ls_tetraAdj[j]
+            A2=ls_Adj1[j]
+            B2=ls_Adj2[j]
+            C2=ls_Adj3[j]
             
             DistA=nc.lambda_dist(A1,A2)
             DistB=nc.lambda_dist(B1,B2)
@@ -99,20 +101,22 @@ def deltacon0DistMat(ls_Adj):
     return(DistMat)
     
     
-def deltacon0Dist2DGraph(ls_diAdj,ls_triAdj):
+def deltacon0Dist2DGraph(ls_Adj1,ls_Adj2):
     '''
-     Compute the resistance distances between di-sequence graphs and tri-sequence graphs
+     Compute the resistance distances between 2D graphs
      use the maximum value as the distance between each pair of graphs
      
     '''
-    N=len(ls_diAdj)
+    N=len(ls_Adj1)
     DistMat=np.zeros(shape=(N,N),dtype='float64')
     for i in range(N-1):
         for j in range(i+1, N):
-            A1=ls_diAdj[i]
-            B1=ls_triAdj[i]
-            A2=ls_diAdj[j]
-            B2=ls_triAdj[j]
+            A1=ls_Adj1[i]
+            B1=ls_Adj2[i]
+            
+            A2=ls_Adj1[j]
+            B2=ls_Adj2[j]
+            
             DistA=nc.deltacon0(A1,A2)
             DistB=nc.deltacon0(B1,B2)
             DistMat[i, j]=max(DistA, DistB)
@@ -136,20 +140,22 @@ def editDistMat(ls_Adj):
     DistMat = DistMat + np.transpose(DistMat)
     return(DistMat) 
 
-def editDist2DGraph(ls_diAdj,ls_triAdj):
+def editDist2DGraph(ls_Adj1,ls_Adj2):
     '''
-     Compute the edit distances between di-sequence graphs and tri-sequence graphs
+     Compute the edit distances between 2D graphs
      use the maximum value as the distance between each pair of graphs
      
     '''
-    N=len(ls_diAdj)
+    N=len(ls_Adj1)
     DistMat=np.zeros(shape=(N,N),dtype='float64')
     for i in range(N-1):
         for j in range(i+1, N):
-            A1=ls_diAdj[i]
-            B1=ls_triAdj[i]
-            A2=ls_diAdj[j]
-            B2=ls_triAdj[j]
+            A1=ls_Adj1[i]
+            B1=ls_Adj2[i]
+            
+            A2=ls_Adj1[j]
+            B2=ls_Adj2[j]
+            
             DistA=nc.edit_distance(A1,A2)
             DistB=nc.edit_distance(B1,B2)
             DistMat[i, j]=max(DistA, DistB)
@@ -157,23 +163,23 @@ def editDist2DGraph(ls_diAdj,ls_triAdj):
     return(DistMat)
 
     
-def editDist3DGraph(ls_diAdj,ls_triAdj,ls_tetraAdj):
+def editDist3DGraph(ls_Adj1,ls_Adj2,ls_Adj3):
     '''
-     Compute the edit distances between di-sequence, tri-sequence, and tetra-sequence graphs
+     Compute the edit distances between 3D graphs
      use the maximum value as the distance between each pair of graphs
      
     '''
-    N=len(ls_diAdj)
+    N=len(ls_Adj1)
     DistMat=np.zeros(shape=(N,N),dtype='float64')
     for i in range(N-1):
         for j in range(i+1, N):
-            A1=ls_diAdj[i]
-            B1=ls_triAdj[i]
-            C1=ls_tetraAdj[i]
+            A1=ls_Adj1[i]
+            B1=ls_Adj2[i]
+            C1=ls_Adj3[i]
             
-            A2=ls_diAdj[j]
-            B2=ls_triAdj[j]
-            C2=ls_tetraAdj[j]
+            A2=ls_Adj1[j]
+            B2=ls_Adj2[j]
+            C2=ls_Adj3[j]
             
             DistA=nc.edit_distance(A1,A2)
             DistB=nc.edit_distance(B1,B2)
