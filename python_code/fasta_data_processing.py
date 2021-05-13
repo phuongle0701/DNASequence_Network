@@ -40,3 +40,15 @@ def extractDNA_Sequence(seqs):
     return  DNASequences, Label
 
 
+#### modify the input of DNA sequences ###
+def tidSeq_remove(seq):
+    '''
+    remove all of other letters except A,C,G,T from the sequence
+    change seq into upper case
+    '''
+    if seq.islower():
+        seq=seq.upper()
+        
+    seq=seq.replace('N','').replace('R','').replace('Y','').replace('K','').replace('M','').replace('W','').replace('V','').replace('S','')
+     
+    return seq
